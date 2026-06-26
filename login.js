@@ -16,7 +16,7 @@ function togglePasswordVisibility() {
 function handleLogin(event) {
     event.preventDefault();
     
-    const usernameInput = document.getElementById('username').value.trim();
+    const usernameInput = document.getElementById('username').value.trim().toLowerCase();
     const passwordInput = document.getElementById('password').value.trim();
     const loginCard = document.getElementById('loginCard');
     const errorMessage = document.getElementById('errorMessage');
