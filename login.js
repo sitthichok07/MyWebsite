@@ -28,11 +28,13 @@ function handleLogin(event) {
     successMessage.classList.remove('show');
     loginCard.classList.remove('shake');
 
-    // Correct credentials
-    const CORRECT_USER = 'sitthichok';
-    const CORRECT_PASS = '1234';
+    // Correct credentials database
+    const VALID_USERS = {
+        'sitthichok': '1234',
+        'supichaya': '1234'
+    };
 
-    if (usernameInput === CORRECT_USER && passwordInput === CORRECT_PASS) {
+    if (VALID_USERS[usernameInput] && VALID_USERS[usernameInput] === passwordInput) {
         // Success logic
         successMessage.classList.add('show');
         submitBtn.disabled = true;
@@ -40,7 +42,7 @@ function handleLogin(event) {
         
         // Save session login flag (for basic client-side check on dashboard)
         sessionStorage.setItem('isLoggedIn', 'true');
-        sessionStorage.setItem('username', CORRECT_USER);
+        sessionStorage.setItem('username', usernameInput);
 
         // Redirect after 1.5s success animation
         setTimeout(() => {
