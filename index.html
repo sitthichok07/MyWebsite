@@ -14,21 +14,37 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <!-- Background glows -->
+    <!-- Premium Interactive Background -->
     <div class="glow-bg">
         <div class="shape shape-1"></div>
         <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Floating Micro Particles -->
+    <div class="particles-container">
+        <div class="particle" style="--i:1; --size:8px; --left:10%; --delay:0s; --duration:15s;"></div>
+        <div class="particle" style="--i:2; --size:12px; --left:25%; --delay:2s; --duration:18s;"></div>
+        <div class="particle" style="--i:3; --size:6px; --left:45%; --delay:4s; --duration:12s;"></div>
+        <div class="particle" style="--i:4; --size:14px; --left:60%; --delay:1s; --duration:20s;"></div>
+        <div class="particle" style="--i:5; --size:10px; --left:75%; --delay:6s; --duration:14s;"></div>
+        <div class="particle" style="--i:6; --size:8px; --left:90%; --delay:3s; --duration:16s;"></div>
     </div>
 
     <!-- Login Container -->
     <div class="login-wrapper">
         <div class="login-card" id="loginCard">
+            <!-- Neon Border Line Glow -->
+            <div class="border-glow"></div>
+            
             <!-- Brand / Logo Header -->
             <div class="brand-header">
                 <div class="icon-box">
                     <i data-lucide="cpu" class="neon-icon"></i>
                 </div>
                 <h2>IoT CONTROL</h2>
+                <div class="glow-bar"></div>
                 <p>เข้าสู่ระบบควบคุมอุปกรณ์อัจฉริยะ</p>
             </div>
 
@@ -40,6 +56,7 @@
                     <div class="input-wrapper">
                         <i data-lucide="user" class="input-icon"></i>
                         <input type="text" id="username" placeholder="ใส่ชื่อผู้ใช้งานของคุณ" required autocomplete="off">
+                        <span class="focus-border"></span>
                     </div>
                 </div>
 
@@ -49,6 +66,7 @@
                     <div class="input-wrapper">
                         <i data-lucide="lock" class="input-icon"></i>
                         <input type="password" id="password" placeholder="ใส่รหัสผ่านของคุณ" required>
+                        <span class="focus-border"></span>
                         <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">
                             <i data-lucide="eye" id="eyeIcon"></i>
                         </button>
