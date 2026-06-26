@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แดชบอร์ดควบคุม | IoT Smart Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Style Sheets -->
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Background glows -->
+    <div class="glow-bg">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <!-- Security Check (Instant hide/show prevention) -->
+    <script>
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <!-- Main Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i data-lucide="cpu" class="neon-icon"></i>
+                <h2>IoT SMART</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><i data-lucide="layout-dashboard"></i> แดชบอร์ด</a>
+                <a href="#" class="nav-item"><i data-lucide="activity"></i> ประวัติการทำงาน</a>
+                <a href="#" class="nav-item"><i data-lucide="sliders"></i> ตั้งค่าอุปกรณ์</a>
+                <a href="#" class="nav-item"><i data-lucide="bell"></i> แจ้งเตือน</a>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div>
+                        <h4 id="userNameDisplay">sitthichok</h4>
+                        <span class="user-role">ผู้ดูแลระบบ</span>
+                    </div>
+                </div>
+                <button onclick="handleLogout()" class="logout-btn">
+                    <i data-lucide="log-out"></i>
+                    <span>ออกจากระบบ</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div>
+                    <h1>ระบบควบคุมอัจฉริยะ (IoT Control)</h1>
+                    <p class="subtitle">ยินดีต้อนรับกลับมา, <span class="highlight">sitthichok</span> • สถานะระบบ: <span class="status-online"><span class="dot"></span> Online</span></p>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn" onclick="toggleAutoSimulate()" id="simBtn">
+                        <i data-lucide="play" id="simIcon"></i>
+                        <span id="simText">จำลองข้อมูลอัตโนมัติ</span>
+                    </button>
+                    <div class="time-display" id="timeDisplay">00:00:00</div>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                
+                <!-- Sensor 1: Temperature -->
+                <div class="card sensor-card sensor-temp">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper temp-bg">
+                            <i data-lucide="thermometer" class="icon-temp"></i>
+                        </div>
+                        <span class="sensor-title">อุณหภูมิห้อง</span>
+                    </div>
+                    <div class="card-value">
+                        <span id="tempValue">25.4</span><span class="unit">°C</span>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-trend trend-down"><i data-lucide="trending-down"></i> ลดลง 0.2°C จากชั่วโมงที่แล้ว</span>
+                    </div>
+                </div>
+
+                <!-- Sensor 2: Humidity -->
+                <div class="card sensor-card sensor-humidity">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper humidity-bg">
+                            <i data-lucide="droplets" class="icon-humidity"></i>
+                        </div>
+                        <span class="sensor-title">ความชื้นสัมพัทธ์</span>
+                    </div>
+                    <div class="card-value">
+                        <span id="humidityValue">58</span><span class="unit">% RH</span>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-trend trend-up"><i data-lucide="trending-up"></i> เพิ่มขึ้น 2% จากชั่วโมงที่แล้ว</span>
+                    </div>
+                </div>
+
+                <!-- Sensor 3: Power Consumption -->
+                <div class="card sensor-card sensor-power">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper power-bg">
+                            <i data-lucide="zap" class="icon-power"></i>
+                        </div>
+                        <span class="sensor-title">อัตราสิ้นเปลืองไฟ</span>
+                    </div>
+                    <div class="card-value">
+                        <span id="powerValue">120</span><span class="unit">Watts</span>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-trend trend-stable"><i data-lucide="activity"></i> ทำงานเสถียรปกติ</span>
+                    </div>
+                </div>
+
+                <!-- Quick Control Switch Panel -->
+                <div class="card control-panel-card">
+                    <h3>ควบคุมอุปกรณ์ (Smart Switches)</h3>
+                    <div class="switches-grid">
+                        <!-- Switch 1: Light -->
+                        <div class="switch-item" id="switchLightBox">
+                            <div class="switch-info">
+                                <i data-lucide="lightbulb" class="control-icon" id="iconLight"></i>
+                                <div>
+                                    <h4>ระบบไฟส่องสว่าง</h4>
+                                    <p id="statusLightText">ปิดใช้งาน</p>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="switchLight" onchange="toggleDevice('Light', this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- Switch 2: Fan/Air -->
+                        <div class="switch-item" id="switchAirBox">
+                            <div class="switch-info">
+                                <i data-lucide="fan" class="control-icon" id="iconAir"></i>
+                                <div>
+                                    <h4>เครื่องปรับอากาศ</h4>
+                                    <p id="statusAirText">ปิดใช้งาน</p>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="switchAir" onchange="toggleDevice('Air', this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- Switch 3: Pump -->
+                        <div class="switch-item" id="switchPumpBox">
+                            <div class="switch-info">
+                                <i data-lucide="spline" class="control-icon" id="iconPump"></i>
+                                <div>
+                                    <h4>ปั๊มรดน้ำต้นไม้</h4>
+                                    <p id="statusPumpText">ปิดใช้งาน</p>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="switchPump" onchange="toggleDevice('Pump', this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Logs / Actions History Terminal -->
+                <div class="card terminal-card">
+                    <div class="terminal-header">
+                        <h3>ประวัติระบบ (Live IoT Terminal Log)</h3>
+                        <button class="clear-log-btn" onclick="clearLogs()">ล้างบันทึก</button>
+                    </div>
+                    <div class="terminal-body" id="terminalLogs">
+                        <div class="log-line text-system">[SYSTEM] ระบบเริ่มต้นการทำงาน...</div>
+                        <div class="log-line text-system">[MQTT] เชื่อมต่อกับ MQTT Broker สำเร็จ</div>
+                        <div class="log-line text-info">[USER] ผู้ใช้งาน 'sitthichok' ได้เข้าสู่ระบบควบคุม</div>
+                    </div>
+                </div>
+
+                <!-- Simulation Control card (Legacy "Random Temp" support requested by original code structure) -->
+                <div class="card sensor-control-card">
+                    <h3>ควบคุมการสุ่มข้อมูล (Manual Trigger)</h3>
+                    <p class="description-text">ปุ่มควบคุมดั้งเดิมเพื่อกดสุ่มจำลองข้อมูลสำหรับอุณหภูมิและความชื้นทันที</p>
+                    <button class="action-btn-primary" onclick="triggerRandomSimulation()">
+                        <i data-lucide="dice-5"></i>
+                        <span>สุ่มจำลองค่าเซ็นเซอร์ (Random Sensors)</span>
+                    </button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
