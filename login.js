@@ -31,7 +31,9 @@ function handleLogin(event) {
     // Correct credentials database
     const VALID_USERS = {
         'sitthichok': '1234',
-        'supichaya': '1234'
+        'supichaya': '1234',
+        'safe': '1234',
+        'captain': '1234'
     };
 
     if (VALID_USERS[usernameInput] && VALID_USERS[usernameInput] === passwordInput) {
